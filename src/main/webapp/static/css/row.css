@@ -1,0 +1,28 @@
+
+
+.row {
+	width: 100%;
+	height: 150px;
+}
+
+.rowTab {
+	float: left;
+	width: 50px;
+	height: 100%;
+	border-top: 1px solid rgb(204,0,0);
+	border-bottom: 1px solid rgb(204,0,0);
+}
+
+.rowTab .name {
+	width: 150px;
+	height: 30px;
+	background-color: rgb(204,0,0);
+	-webkit-transform: rotate(270deg);
+	position: absolute;
+	left: -61px;
+	top: 61px;
+	color: white;
+	
+	sda
+}
+
