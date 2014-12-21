@@ -1,9 +1,45 @@
 
-
 .event {
 	
-	border: 1px solid black;
-	width: 100px;
-	height: 100px;
+	width: 150px;
+	height: 150px;
+	position: relative;
+	float: left;
+	    
+	-webkit-box-shadow: 1px 4px 4px -1px rgba(15, 15, 15, 0.75);
+	margin-left: 15px;
+}
+
+.event .date {
+    width: 100%;
 	
+    background-color: rgb(224, 231, 237);
+    height: 25px;
+    line-height: 25px;
+    border: 1px solid rgb(224, 231, 237);
+}
+
+.row div:nth-child(2) {
+    margin-left: 63px;
+	
+	
+}
+
+.event .textContent {
+	width: 90%;
+	height: 95%;
+	margin-left: 8px;
+}
+
+.event .textContentBox {
+    height: 125px;
+	
+    width: 100%;
+    text-align: left;
+    border-color: rgb(224, 231, 237);
+    border-width: 0px 1px 1px 1px;
+    border-style: solid;
+    background-color: white;
+    border-radius: 0px 0px 3px 3px;
+    margin-left: 0px !important;
 }

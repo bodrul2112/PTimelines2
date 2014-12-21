@@ -1,7 +1,7 @@
 
 
 .row {
-	width: 100%;
+	width: 200%;
 	height: 150px;
 }
 
@@ -11,6 +11,10 @@
 	height: 100%;
 	border-top: 1px solid rgb(204,0,0);
 	border-bottom: 1px solid rgb(204,0,0);
+	-webkit-box-shadow: -2px 2px 1px -1px rgba(204, 16, 16, 0.75);
+	background-color: transparent;
+	margin-left: 4px;
+	position: absolute;
 }
 
 .rowTab .name {
@@ -19,10 +23,9 @@
 	background-color: rgb(204,0,0);
 	-webkit-transform: rotate(270deg);
 	position: absolute;
-	left: -61px;
-	top: 61px;
+	left: -65px;
+	top: 60px;
 	color: white;
-	
-	sda
+	margin-left: 5px;
 }
 

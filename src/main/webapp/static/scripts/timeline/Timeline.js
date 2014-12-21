@@ -16,9 +16,17 @@ define(["timeline/row/Row"], function(Row) {
         {
         	eContainer.append(this.element);
         	
-        	var row = new Row();
+        	var row = new Row("My Timeline");
+        	var row2 = new Row("Another Line");
         	
         	this.element.append(row.getElement());
+        	this.element.append(row2.getElement());
+        	
+        	
+        	
+        	// hardcoding some default positions for demo-ing
+        	row.getElement().css('top', '100px');
+        	row2.getElement().css('top', '122px');
         	
         	
 //        	var viewModel =  function() {

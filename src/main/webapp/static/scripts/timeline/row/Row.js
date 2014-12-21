@@ -1,16 +1,38 @@
 
+define(["timeline/row/RowTab", 
+        "timeline/data/TimelineData",
+        "timeline/event/Event"], 
+        
+        function(RowTab, TimelineData, Event) {
 
-define(["timeline/row/RowTab"], function(RowTab) {
-
-        var Row = function()
+        var Row = function( _timelineName )
         {
+        	this.timelineName = _timelineName;
         	this.element = TPL.getTemplate(".row");
-        	this.element.draggable({ axis: 'y' });
+        	this.rowTab = new RowTab(this.timelineName);
+        	this.timelineData = new TimelineData();
         	
-        	this.rowTab = new RowTab();
+        	this.element.draggable({ axis: 'y' });
         	this.element.append(this.rowTab.getElement());
         	
-        	window.fuckyou = this.rowTab;
+        	this.pEvents = [];
+        	
+        	this._addEvents();
+        }
+        
+        Row.prototype._addEvents = function()
+        {
+        	var events = this.timelineData.getEvents( this.timelineName );
+        	
+        	for(var key in events)
+        	{
+        		var eventData = events[key];
+        		var event = new Event(eventData);
+        		
+        		this.pEvents.push(event);
+        		
+        		this.element.append(event.getElement());
+        	}
         }
         
         Row.prototype.getElement = function()

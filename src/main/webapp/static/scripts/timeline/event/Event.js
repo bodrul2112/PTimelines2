@@ -1,13 +1,13 @@
 
+
 define([], function() {
 
-        var RowTab = function(_timelineName)
+        var RowTab = function( _eventData )
         {
-        	this.timelineName = _timelineName;
-        	
-        	this.element = TPL.getTemplate(".rowTab");
-        	this.name = KO.observable(this.timelineName);
-        	
+        	this.date = KO.observable(""+_eventData.date);
+        	this.textContent = KO.observable(""+_eventData.textContent);
+
+        	this.element = TPL.getTemplate(".event");
         	KO.applyBindings(this, this.element[0]);
         }
         
