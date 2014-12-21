@@ -29,3 +29,8 @@
 	margin-left: 5px;
 }
 
+.rowTabBuffer {
+	float:left;
+	height: 100%;
+	width: 55px;
+}

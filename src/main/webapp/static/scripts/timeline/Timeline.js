@@ -1,10 +1,10 @@
 
-define(["timeline/row/Row"], function(Row) {
+define(["timeline/row/Row", "timeline/row/RowRenderer"], function(Row, RowRenderer) {
 
         var Timeline = function()
         {
         	this.element = TPL.getTemplate(".main_wrapper");
-//        	this.eventElement = TPL.getTemplate(".event");
+        	this.rowRenderer = new RowRenderer();
         }
         
         Timeline.prototype.insertInto = function( eContainer )
@@ -16,28 +16,17 @@ define(["timeline/row/Row"], function(Row) {
         {
         	eContainer.append(this.element);
         	
-        	var row = new Row("My Timeline");
-        	var row2 = new Row("Another Line");
+        	this.rowRenderer.renderTimelines("", this.element);
         	
-        	this.element.append(row.getElement());
-        	this.element.append(row2.getElement());
-        	
-        	
-        	
-        	// hardcoding some default positions for demo-ing
-        	row.getElement().css('top', '100px');
-        	row2.getElement().css('top', '122px');
-        	
-        	
-//        	var viewModel =  function() {
-//        			this.textContent = KO.observable("Bob")
-//        		};
 //        	
-//        	KO.applyBindings(viewModel, this.eventElement[0]);
-////        	
-//        	this.eventElement.draggable();
-////        	
-//        	this.element.append(this.eventElement);
+//        	this.element.append(row.getElement());
+//        	this.element.append(row2.getElement());
+//        	
+//        	
+//        	// hardcoding some default positions for demo-ing
+//        	row.getElement().css('top', '100px');
+//        	row2.getElement().css('top', '122px');
+        	
         }
         
         return Timeline;
