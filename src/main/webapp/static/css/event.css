@@ -17,12 +17,22 @@
     height: 25px;
     line-height: 25px;
     border: 1px solid rgb(224, 231, 237);
+    
+    font-weight:bold;
+    color: rgb(85, 88, 118);
+    text-align: left;
+    text-indent: 7px;
 }
 
 .event .textContent {
 	width: 90%;
-	height: 95%;
+	height: 92%;
 	margin-left: 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 12px;
+	font-size: 12px;
+	padding-top: 7px;
 }
 
 .event .textContentBox {
