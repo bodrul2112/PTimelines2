@@ -1,8 +1,9 @@
 
-define([], function() {
+define(["timeline/event/EventTicket"], function( EventTicket ) {
 
-        var RowTab = function(_timelineName)
+        var RowTab = function(_timelineKey, _timelineName)
         {
+        	this.timelineKey = _timelineKey;
         	this.timelineName = _timelineName;
         	
         	this.element = TPL.getTemplate(".rowTab");
@@ -15,6 +16,8 @@ define([], function() {
         
         RowTab.prototype._onPlusClicked = function()
         {
+        	var ticket = new EventTicket(this.timelineKey, this.timelineName);
+        	$('body').append(ticket.getElement());
         }
         
         RowTab.prototype.getElement = function()

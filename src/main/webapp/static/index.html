@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<link rel="stylesheet" type="text/css" href="css/row.css">
 	<link rel="stylesheet" type="text/css" href="css/event.css">
+	<link rel="stylesheet" type="text/css" href="css/eventTicket.css">
 	<script data-main="scripts/main.js" src="scripts/require.js"></script>
 
 </head>
@@ -35,8 +36,24 @@
     	</div>
     	
     	<div class="rowTabBuffer"></div>
-    	<div class="eventBox">
+    	<div class="eventBox"></div>
+    	
+    	<div class="eventTicket">
+    		<div class="header">
+	    		<div class="headerText" data-bind="text:headerText"></div>
+	    		<div class="closeButton" data-bind="click:_onCloseClicked">X</div>
+    		</div>
+    		<div class="dates">
+    			<input class="ymd" data-bind="value:ymd"/>
+    			<input class="hms" data-bind="value:hms"/>
+    		</div>
+    		<textarea class="content" data-bind="value:content">
+    		</textarea>
+    		<div class=buttons>
+    			<div class="doneButton" data-bind="click:_onDoneClicked">Done</div>
+    		</div>
     	</div>
+    	
     </div>
 </body>
 </html>

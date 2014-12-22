@@ -22,6 +22,20 @@ define(["timeline/data/TimelineData",
         	var pSortedEventSlots = this._sortEventSlots(mEventSlots);
         	
         	this._createRows(timelineKeys, containerElement, pSortedEventSlots);
+        	
+        	this._registerScrollListener(containerElement);
+        }
+        
+        RowRenderer.prototype._registerScrollListener = function( containerElement )
+        {
+        	containerElement.on("scroll", function()
+			{
+				for(var index in this.pRows)
+				{
+					this.pRows[index].getTab().setLeft(event.srcElement.scrollLeft);
+				}
+				
+			}.bind(this));
         }
         
         RowRenderer.prototype._createRows = function( timelineKeys, containerElement, pSortedEventSlots )

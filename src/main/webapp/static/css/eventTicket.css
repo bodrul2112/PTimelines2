@@ -1,0 +1,73 @@
+
+
+.eventTicket {
+	float:left;
+	width:300px;
+	height: 348px;
+	background-color: white;
+	z-index:100;
+	
+	border: 6px solid white;
+	overflow: hidden;
+	
+	color: rgb(85, 88, 118);
+	font-weight: bold;
+	
+	font-family: 'Droid Sans',sans-serif;    
+	font-size: 14px;
+	text-align: center;
+	line-height: 33px;
+}
+
+
+.eventTicket .header {
+    background-color: rgb(224, 231, 237);
+    height: 33px;
+}
+
+.eventTicket .headerText {
+    width: 89%;
+	
+    float: left;
+}
+
+.eventTicket .closeButton {
+    width: 11%;
+	
+    float: left;
+    background-color: rgb(85, 88, 118);
+    color: white;
+}
+
+.eventTicket .dates {
+	float: left;
+	width: 99%;	
+}
+
+.eventTicket .content {
+	float: left;
+	width: 98%;
+	height: 262px;	
+}
+
+.eventTicket .buttons {
+	float: left;
+	width:100%;
+	height: 30px;
+	background-color: rgb(224, 231, 237);
+}
+
+.eventTicket .ymd, .eventTicket .hms {
+	float:left;
+	width: 48%;
+	border: 0;
+}
+
+.eventTicket .doneButton:hover {
+	
+	color:white;
+	background-color: rgb(85, 88, 118);
+}
+
+
+
