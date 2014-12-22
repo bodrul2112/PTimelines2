@@ -16,7 +16,7 @@ define([], function() {
             			}
         			},
         			
-        			notloaded: {
+        			notLoaded: {
             			"3" : {
             				"timelineName": "3rd Timeline"
             			},

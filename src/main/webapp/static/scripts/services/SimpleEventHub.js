@@ -7,7 +7,8 @@ define(["thirdparty/jquery"], function( jQuery ){
 	EVT =
 	{	
 		mCallbacks: {},		
-		EVENT_ADDED: "eventAdded"
+		EVENT_ADDED: "eventAdded",
+		TIMELINE_MENU_ITEM_CLICKED: "timelineMenuItemClicked"
 	}
 	
 	EVT.subscribe = function( eventName, callback )

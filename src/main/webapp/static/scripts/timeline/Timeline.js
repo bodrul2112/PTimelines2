@@ -1,15 +1,17 @@
 
 define(["timeline/row/Row", 
         "timeline/row/RowRenderer",
-        "timeline/data/TimelineData"], 
+        "timeline/data/TimelineData",
+        "timeline/menu/TimelineMenu"], 
         
-        function(Row, RowRenderer, TimelineData) {
+        function(Row, RowRenderer, TimelineData, TimelineMenu) {
 
         var Timeline = function()
         {
         	this.element = TPL.getTemplate(".main_wrapper");
         	this.rowRenderer = new RowRenderer( this.element );
         	this.timelineData = new TimelineData();
+        	this.timelineMenu = new TimelineMenu();
         }
         
         Timeline.prototype.insertInto = function( eContainer )

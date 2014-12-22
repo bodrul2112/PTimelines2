@@ -10,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="css/row.css">
 	<link rel="stylesheet" type="text/css" href="css/event.css">
 	<link rel="stylesheet" type="text/css" href="css/eventTicket.css">
+	<link rel="stylesheet" type="text/css" href="css/timelineMenu.css">
 	<script data-main="scripts/main.js" src="scripts/require.js"></script>
 
 </head>
@@ -52,6 +53,25 @@
     		<div class=buttons>
     			<div class="doneButton" data-bind="click:_onDoneClicked">Done</div>
     		</div>
+    	</div>
+    	
+    	<div class="timelineMenu">
+    		<div class= "hoverBar"></div>
+    		<div class="menuBody">
+	    		<div class="searchBar">
+	    			<input class="searchBox"/>
+	    			<div class="createTimelineButton" data-bind="click:_onCreateTimelineClicked">+</div>
+	    		</div>
+	    		<div class="timelineNames">
+	    			<div class="loaded"></div>
+	    			<div class="notLoaded"></div>
+	    		</div>
+	    		<div class="hideButton">Hide</div>
+    		</div>
+    	</div>
+    	
+    	<div class="timelineButton" data-bind="css: { loadedTimeline: isLoaded() }">
+    		<div class="timelineLabel" data-bind="text:timelineName, click:_onTimelineClicked"></div>
     	</div>
     	
     </div>
