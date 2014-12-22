@@ -4,7 +4,7 @@ define(["timeline/row/Row", "timeline/row/RowRenderer"], function(Row, RowRender
         var Timeline = function()
         {
         	this.element = TPL.getTemplate(".main_wrapper");
-        	this.rowRenderer = new RowRenderer();
+        	this.rowRenderer = new RowRenderer( this.element );
         }
         
         Timeline.prototype.insertInto = function( eContainer )
@@ -16,7 +16,7 @@ define(["timeline/row/Row", "timeline/row/RowRenderer"], function(Row, RowRender
         {
         	eContainer.append(this.element);
         	
-        	this.rowRenderer.renderTimelines("", this.element);
+        	this.rowRenderer.renderTimelines("");
         	
 //        	
 //        	this.element.append(row.getElement());

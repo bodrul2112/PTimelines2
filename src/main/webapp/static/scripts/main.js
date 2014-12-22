@@ -1,12 +1,12 @@
 
 
-require( ["plugins/domReady", "thirdparty/jquery", "thirdparty/easing", "thirdparty/jquery-ui", "thirdparty/knockout", "services/TemplateService", "timeline/Timeline"], 
-		function(domReady, jQuery, Easing, jui, knockout, tpl, Timeline){
+require( ["plugins/domReady", "thirdparty/jquery", "thirdparty/easing", "thirdparty/jquery-ui", "thirdparty/knockout", "services/TemplateService", "services/SimpleEventHub", "timeline/Timeline"], 
+		function(domReady, jQuery, Easing, jui, knockout, tpl, evt, Timeline){
 	
 	domReady(function(){
 		
-		require(["thirdparty/jquery", "thirdparty/easing", "thirdparty/jquery-ui", "thirdparty/knockout", "services/TemplateService", "timeline/Timeline"], 
-				function(jQuery, Easing, jui, knockout, tpl, Timeline) {
+		require(["thirdparty/jquery", "thirdparty/easing", "thirdparty/jquery-ui", "thirdparty/knockout", "services/TemplateService", "services/SimpleEventHub", "timeline/Timeline"], 
+				function(jQuery, Easing, jui, knockout, tpl, evt, Timeline) {
 			
 				var oEasing = new Easing(); 
 				

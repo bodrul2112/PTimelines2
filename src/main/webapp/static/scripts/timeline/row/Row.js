@@ -16,11 +16,29 @@ define(["timeline/row/RowTab"],
         	this.element.append(this.rowTab.getElement());
         	this.element.append(this.tabBuffer);
         	
+        	
+        	this.renderedEventBoxes = [];
+        }
+        
+        Row.prototype.getTimelineKey = function()
+        {
+        	return this.timelineKey;
         }
         
         Row.prototype.addEventBox = function( eventBoxElement )
         {
         	this.element.append(eventBoxElement);
+        	this.renderedEventBoxes.push(eventBoxElement);
+        }
+        
+        Row.prototype.removeAllBoxes = function()
+        {
+        	for(var index in this.renderedEventBoxes)
+        	{
+        		this.renderedEventBoxes[index].remove();
+        	}
+        	
+        	this.renderedEventBoxes = [];
         }
         
         Row.prototype.getTab = function()
@@ -32,6 +50,8 @@ define(["timeline/row/RowTab"],
         {
         	return this.element;
         }
+        
+        
         
         return Row;
 });

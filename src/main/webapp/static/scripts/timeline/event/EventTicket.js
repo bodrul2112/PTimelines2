@@ -1,5 +1,5 @@
 
-define([], function() {
+define(["timeline/event/Event"], function( Event ) {
 
         var EventTicket = function(_timelineKey, _timelineName)
         {
@@ -7,8 +7,8 @@ define([], function() {
         	this.element = TPL.getTemplate(".eventTicket");
         	
         	this.headerText = KO.observable(_timelineName);
-        	this.ymd = KO.observable("yymmdd");
-        	this.hms = KO.observable("hhmmss");
+        	this.ymd = KO.observable("20120101");
+        	this.hms = KO.observable("121212");
         	this.content = KO.observable("");
         	KO.applyBindings(this, this.element[0]);
         	
@@ -22,7 +22,30 @@ define([], function() {
         
         EventTicket.prototype._onDoneClicked = function()
         {
-        	console.log("yo dawg");
+        	this.element.focus();// otherwise the val of content is still empty
+        	if(this.ymd().trim().length > 0 && this.hms().trim().length>0 && this.content().trim().length>0)
+        	{
+        		var _id = new Date().getTime();
+        		var _isoDate = parseInt(this.ymd().trim()+this.hms().trim());
+        		var _textContent = this.content().trim();
+        		
+        		var eventData =
+        		{
+        			id: _id,
+        			date: _isoDate,
+        			textContent: _textContent
+        		}
+        		
+        		var event = new Event(this.timelineKey, this.headerText(), eventData );
+        		
+        		EVT.publish(EVT.EVENT_ADDED, event);
+        		
+        		this.element.remove();
+        	}
+        	else
+        	{
+        		alert("fill in all da boxes");
+        	}
         }
         
         EventTicket.prototype.getElement = function()
