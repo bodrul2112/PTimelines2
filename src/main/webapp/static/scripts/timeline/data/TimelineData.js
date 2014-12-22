@@ -43,6 +43,51 @@ define([], function() {
 	        	            	id: "6",
 	          	            	date: 20150106121212,
 	          	            	textContent: "6th"
+	          	              },
+	          	              {
+	        	            	id: "7",
+	          	            	date: 20150107121212,
+	          	            	textContent: "7th"
+	          	              },
+	          	              {
+	          	            	id: "8",
+	        	            	date: 20150108121212,
+	        	            	textContent: "8th"
+	        	              },
+	        	              {
+	        	            	id: "9",
+	          	            	date: 20150109121212,
+	          	            	textContent: "9th"
+	          	              },
+	          	              {
+	        	            	id: "10",
+	          	            	date: 20150110121212,
+	          	            	textContent: "10th"
+	          	              },
+	          	              {
+	          	            	id: "11",
+	        	            	date: 20150111121212,
+	        	            	textContent: "11th"
+	        	              },
+	        	              {
+	        	            	id: "12",
+	          	            	date: 20150112121212,
+	          	            	textContent: "12th"
+	          	              },
+	          	              {
+	        	            	id: "13",
+	          	            	date: 20150113121212,
+	          	            	textContent: "13th"
+	          	              },
+	          	              {
+	          	            	id: "14",
+	        	            	date: 20150114121212,
+	        	            	textContent: "14th"
+	        	              },
+	        	              {
+	        	            	id: "15",
+	          	            	date: 20150115121212,
+	          	            	textContent: "15th"
 	          	              }
 	        	              ]
           	              }
