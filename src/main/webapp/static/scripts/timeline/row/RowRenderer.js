@@ -15,17 +15,20 @@ define(["timeline/data/TimelineData",
         	this.pSortedEventSlots = [];
         	
         	// hard coding timeline names and gets for now
-        	this.renderedTimelineNames = ["My Timeline 1", "Another Timeline"];
-        	this.renderedTimelineKeys = ["1","2"];
+//        	this.renderedTimelineNames = ["My Timeline 1", "Another Timeline"];
+//        	this.renderedTimelineKeys = ["1","2"];
+        	this.mTimelines = {};
         	
         	this._registerScrollListener();
         	
         	EVT.subscribe(EVT.EVENT_ADDED, this._onEventAdded.bind(this));
         }
         
-        RowRenderer.prototype.renderTimelines = function( timelineKeys )
+        RowRenderer.prototype.renderTimelines = function( _mTimelines )
         {
-        	var mEventSlots = this._createEventSlots(this.renderedTimelineKeys);
+        	this.mTimelines = _mTimelines;
+        	
+        	var mEventSlots = this._createEventSlots();
         	this.pSortedEventSlots = this._sortEventSlots(mEventSlots);
         	
         	this._createRows();
@@ -94,10 +97,9 @@ define(["timeline/data/TimelineData",
         
         RowRenderer.prototype._addEventsToRows = function( )
         {
-        	for(var index in this.renderedTimelineKeys)
+        	for(var timelineKey in this.mTimelines)
         	{
-        		var timelineKey = this.renderedTimelineKeys[index];
-        		var timelineName = this.renderedTimelineNames[index];
+        		var timelineName = this.mTimelines[timelineKey].timelineName;
         		var row = this._getOrCreateRow(timelineKey, timelineName);
         		
             	for(var index in this.pSortedEventSlots)
@@ -156,13 +158,12 @@ define(["timeline/data/TimelineData",
 			return event_a.getDate() - event_b.getDate();
 		}
         
-        RowRenderer.prototype._createEventSlots = function( timelineKeys )
+        RowRenderer.prototype._createEventSlots = function()
         {
         	var mEventSlots = {};
         	
-        	for(var index in timelineKeys)
+        	for(var timelineKey in this.mTimelines)
         	{
-        		var timelineKey = timelineKeys[index];
         		var timelineData = this.timelineData.getTimeline( timelineKey );
         		
         		for(var key in timelineData.events)

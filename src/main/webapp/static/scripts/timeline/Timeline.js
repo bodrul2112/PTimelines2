@@ -1,10 +1,15 @@
 
-define(["timeline/row/Row", "timeline/row/RowRenderer"], function(Row, RowRenderer) {
+define(["timeline/row/Row", 
+        "timeline/row/RowRenderer",
+        "timeline/data/TimelineData"], 
+        
+        function(Row, RowRenderer, TimelineData) {
 
         var Timeline = function()
         {
         	this.element = TPL.getTemplate(".main_wrapper");
         	this.rowRenderer = new RowRenderer( this.element );
+        	this.timelineData = new TimelineData();
         }
         
         Timeline.prototype.insertInto = function( eContainer )
@@ -16,14 +21,8 @@ define(["timeline/row/Row", "timeline/row/RowRenderer"], function(Row, RowRender
         {
         	eContainer.append(this.element);
         	
-        	this.rowRenderer.renderTimelines("");
+        	this.rowRenderer.renderTimelines(this.timelineData.getTimelineNames().loaded);
         	
-//        	
-//        	this.element.append(row.getElement());
-//        	this.element.append(row2.getElement());
-//        	
-//        	
-//        	// hardcoding some default positions for demo-ing
 //        	row.getElement().css('top', '100px');
 //        	row2.getElement().css('top', '122px');
         	

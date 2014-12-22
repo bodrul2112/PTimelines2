@@ -4,6 +4,29 @@ define([], function() {
 
         var TimelineData = function()
         {
+        	
+        	this.mockTimelineMap = {
+        		
+        			loaded: {
+            			"1" : {
+            				"timelineName": "My Timeline 1"
+            			},
+            			"2" : {
+            				"timelineName": "Another Timeline"
+            			}
+        			},
+        			
+        			notloaded: {
+            			"3" : {
+            				"timelineName": "3rd Timeline"
+            			},
+            			"4" : {
+            				"timelineName": "4th Timeline"
+            			}
+        			}
+
+        	}
+        	
         	this.mockData= { 
         				  "1": { 
         				  "timelineName" : "My Timeline 1",
@@ -90,8 +113,34 @@ define([], function() {
 	          	            	textContent: "15th"
 	          	              }
 	        	              ]
-          	              }
+          	              },
+          	              
+        				  "3": { 
+        				  "timelineName" : "3rd Timeline",
+        				  "events" : [
+	        	              {
+	        	            	id: "1",
+	        	            	date: 20150101121212,
+	        	            	textContent: "first"
+	        	              },
+	        	              {
+	        	            	id: "2",  
+	          	            	date: 20150101121212,
+	          	            	textContent: "secons"
+	          	              },
+	          	              {
+	          	            	id: "3",
+	        	            	date: 20150104121212,
+	        	            	textContent: "fourth Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+	        	              }
+	          	              ]
+        				  },
         	}
+        }
+        
+        TimelineData.prototype.getTimelineNames = function()
+        {
+        	return this.mockTimelineMap;
         }
         
         TimelineData.prototype.getTimeline = function( timelineKey )
