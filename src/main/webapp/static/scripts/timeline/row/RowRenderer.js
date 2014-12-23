@@ -18,6 +18,7 @@ define(["timeline/data/TimelineData",
 //        	this.renderedTimelineNames = ["My Timeline 1", "Another Timeline"];
 //        	this.renderedTimelineKeys = ["1","2"];
         	this.mTimelines = {};
+        	this.mCoords = {};
         	
         	this._registerScrollListener();
         	
@@ -38,9 +39,14 @@ define(["timeline/data/TimelineData",
         }
         
         RowRenderer.prototype._clearDownAllRows = function() {
+        	
         	for(var index in this.pRows){
+        		
+        		var row = this.pRows[index];
+        		this.mCoords[row.getTimelineKey()] = row.getElement().css('top');
         		this.pRows[index].getElement().remove();
         	}
+        	
         	this.pRows = [];
         	this.pSortedEventSlots = [];
 		}        
@@ -100,6 +106,12 @@ define(["timeline/data/TimelineData",
         	}
         	
         	var row = new Row(timelineKey, timelineName);
+        	
+        	if(this.mCoords[row.getTimelineKey()])
+        	{
+        		row.getElement().css('top', this.mCoords[row.getTimelineKey()]);
+        	}
+        	
         	this.pRows.push(row);
         	return row;
         }
