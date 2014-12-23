@@ -9,6 +9,8 @@ define(["timeline/data/TimelineData", "timeline/menu/TimelineButton"], function(
         	this.eLoaded = this.element.find('.timelineNames .loaded');
         	this.eNotLoaded = this.element.find('.timelineNames .notLoaded')
         	
+        	this.isActive = KO.observable(false);
+        	
         	KO.applyBindings(this, this.element[0]);
         	$('body').append(this.element);
         	
@@ -21,9 +23,18 @@ define(["timeline/data/TimelineData", "timeline/menu/TimelineButton"], function(
         	EVT.subscribe(EVT.TIMELINE_MENU_ITEM_CLICKED, this._onTimelineLoadedCallback.bind(this));
         }
         
+        TimelineMenu.prototype._onHideClicked = function()
+        {
+        	this.isActive(false);
+        }
+        
+        TimelineMenu.prototype._onHoverbarClicked = function()
+        {
+        	this.isActive(true);
+        }
+        
         TimelineMenu.prototype._onCreateTimelineClicked = function()
         {
-        	console.log("yo");
         }
         
         TimelineMenu.prototype._onTimelineLoadedCallback = function( timelineButton )

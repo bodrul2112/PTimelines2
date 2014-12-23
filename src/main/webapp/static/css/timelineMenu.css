@@ -31,6 +31,11 @@
 	position:absolute;
 	height:100%;
 	width: 390px;
+	left: 0px;
+	
+	transition: 1s cubic-bezier(0.87, 0, 0.16, 1)
+}
+.timelineMenu .menuBody.active {
 	left: -390px;
 }
 

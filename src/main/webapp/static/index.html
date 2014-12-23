@@ -56,8 +56,8 @@
     	</div>
     	
     	<div class="timelineMenu">
-    		<div class= "hoverBar"></div>
-    		<div class="menuBody">
+    		<div class= "hoverBar" data-bind="click:_onHoverbarClicked"></div>
+    		<div class="menuBody" data-bind="css: { active: isActive() }">
 	    		<div class="searchBar">
 	    			<input class="searchBox"/>
 	    			<div class="createTimelineButton" data-bind="click:_onCreateTimelineClicked">+</div>
@@ -65,7 +65,7 @@
 	    		<div class="timelineNames">
 	    			<div class="loaded"></div>
 	    			<div class="notLoaded"></div>
-		    		<div class="hideButton">Hide</div>
+		    		<div class="hideButton" data-bind="click:_onHideClicked">Hide</div>
 	    		</div>
     		</div>
     	</div>

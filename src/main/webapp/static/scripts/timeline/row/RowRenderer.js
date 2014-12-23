@@ -69,8 +69,6 @@ define(["timeline/data/TimelineData",
         	this._clearRows();
         	this._addEventsToRows();
         	this._configureBoxSizes();
-        	
-        	console.log("added!", event);
         }
         
         RowRenderer.prototype._registerScrollListener = function()
