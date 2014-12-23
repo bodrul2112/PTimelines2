@@ -22,17 +22,28 @@ define(["timeline/data/TimelineData",
         	this._registerScrollListener();
         	
         	EVT.subscribe(EVT.EVENT_ADDED, this._onEventAdded.bind(this));
+        	EVT.subscribe(EVT.RE_RENDER, this.renderTimelines.bind(this));
         }
         
         RowRenderer.prototype.renderTimelines = function( _mTimelines )
         {
         	this.mTimelines = _mTimelines;
         	
+        	this._clearDownAllRows();
+        	
         	var mEventSlots = this._createEventSlots();
         	this.pSortedEventSlots = this._sortEventSlots(mEventSlots);
         	
         	this._createRows();
         }
+        
+        RowRenderer.prototype._clearDownAllRows = function() {
+        	for(var index in this.pRows){
+        		this.pRows[index].getElement().remove();
+        	}
+        	this.pRows = [];
+        	this.pSortedEventSlots = [];
+		}        
         
         RowRenderer.prototype._onEventAdded = function( event )
         {

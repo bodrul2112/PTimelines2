@@ -47,6 +47,8 @@ define(["timeline/data/TimelineData", "timeline/menu/TimelineButton"], function(
         	}
         	
         	timelineButton._rebind();
+        	
+        	EVT.publish(EVT.RE_RENDER, this.mTimelineData.loaded);
         }
         
         TimelineMenu.prototype.loadMenuItems = function( _mTimelineData )

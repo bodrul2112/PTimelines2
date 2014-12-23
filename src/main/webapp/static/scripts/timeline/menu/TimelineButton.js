@@ -25,7 +25,6 @@ define([], function() {
         
         TimelineButton.prototype._onTimelineClicked = function()
         {
-        	console.log("yooooooooooooooooooo");
         	if(this.isLoaded()) {
         		this.isLoaded(false);
         	}
