@@ -14,9 +14,6 @@ define(["timeline/data/TimelineData",
         	
         	this.pSortedEventSlots = [];
         	
-        	// hard coding timeline names and gets for now
-//        	this.renderedTimelineNames = ["My Timeline 1", "Another Timeline"];
-//        	this.renderedTimelineKeys = ["1","2"];
         	this.mTimelines = {};
         	this.mCoords = {};
         	
@@ -187,13 +184,17 @@ define(["timeline/data/TimelineData",
         	{
         		var timelineData = this.timelineData.getTimeline( timelineKey );
         		
-        		for(var key in timelineData.events)
+        		if(timelineData && timelineData.events)
         		{
-        			var event = new Event(timelineKey, timelineData.timelineName, timelineData.events[key]);
-
-        			this._ensureSlot(mEventSlots, event);
-        			mEventSlots[event.getDate()].addEvent(event);
+        			for(var key in timelineData.events)
+        			{
+        				var event = new Event(timelineKey, timelineData.timelineName, timelineData.events[key]);
+        				
+        				this._ensureSlot(mEventSlots, event);
+        				mEventSlots[event.getDate()].addEvent(event);
+        			}
         		}
+        		
         	}
         	
         	return mEventSlots;

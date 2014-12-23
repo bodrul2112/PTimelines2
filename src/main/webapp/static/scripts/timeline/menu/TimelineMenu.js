@@ -21,6 +21,7 @@ define(["timeline/data/TimelineData", "timeline/menu/TimelineButton"], function(
         	
         	this.loadMenuItems(this.timelineData.getTimelineNames());
         	EVT.subscribe(EVT.TIMELINE_MENU_ITEM_CLICKED, this._onTimelineLoadedCallback.bind(this));
+        	EVT.subscribe(EVT.TIMELINE_ADDED, this._onNewTimelineAdded.bind(this));
         }
         
         TimelineMenu.prototype._onHideClicked = function()
@@ -35,6 +36,24 @@ define(["timeline/data/TimelineData", "timeline/menu/TimelineButton"], function(
         
         TimelineMenu.prototype._onCreateTimelineClicked = function()
         {
+        	var timelineName = this.element.find('.searchBox').val().trim(); 
+        	if(timelineName && timelineName != "" && this._isValidFileName(timelineName))
+        	{
+        		this.timelineData.createNewTimeLine(timelineName);
+        	}
+        	else
+        	{
+        		// flash the searchbox red maybe
+        	}
+        }
+        
+        TimelineMenu.prototype._isValidFileName = function( timelineName )
+        {
+        	var rg1=/^[^\\/:\*\?"<>\|]+$/; 
+        	var rg2=/^\./; 
+        	var rg3=/^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i; 
+        	
+        	return rg1.test(timelineName)&&!rg2.test(timelineName)&&!rg3.test(timelineName);
         }
         
         TimelineMenu.prototype._onTimelineLoadedCallback = function( timelineButton )
@@ -84,6 +103,13 @@ define(["timeline/data/TimelineData", "timeline/menu/TimelineButton"], function(
         		
         		this.eNotLoaded.append(button.getElement());
         	}
+        }
+        
+        TimelineMenu.prototype._onNewTimelineAdded = function( mData )
+        {
+        	var button = new TimelineButton(mData.timelineKey, mData.timelineName, true);
+        	
+        	this.eLoaded.append(button.getElement());
         }
         
         TimelineMenu.prototype.getElement = function()

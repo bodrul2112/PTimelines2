@@ -1,6 +1,6 @@
 
 
-define([], function() {
+define(["timeline/event/Event"], function(Event) {
 
         var TimelineData = function()
         {
@@ -136,6 +136,33 @@ define([], function() {
 	          	              ]
         				  },
         	}
+        }
+        
+        TimelineData.prototype.createNewTimeLine = function( sTimelineName )
+        {
+        	var id = new Date().getTime();
+        	this.mockTimelineMap.loaded[id] = {
+    			"timelineName": sTimelineName
+			};
+        	this.mockData[id] = {
+        		"timelineName": sTimelineName,
+        		"events" : []	
+        	}
+        	
+        	
+        	EVT.publish(EVT.TIMELINE_ADDED, {
+        		"timelineKey": id,
+        		"timelineName": sTimelineName
+        	});
+        	EVT.publish(EVT.RE_RENDER, this.mockTimelineMap.loaded);
+        }
+        
+        TimelineData.prototype.saveEvent = function(timelineKey, timelineName, eventData)
+        {
+        	this.mockData[timelineKey].events.push(eventData);
+        	
+        	var event = new Event(timelineKey, timelineName, eventData );
+        	EVT.publish(EVT.EVENT_ADDED, event);
         }
         
         TimelineData.prototype.getTimelineNames = function()
