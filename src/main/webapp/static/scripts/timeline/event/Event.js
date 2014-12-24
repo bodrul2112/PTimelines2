@@ -9,7 +9,12 @@ define([], function() {
         	this.id = _eventData.id;
         	this.filePath = _eventData.filePath;
         	
-        	this.date = KO.observable(_eventData.date);
+        	this._numericDate = parseInt(_eventData.date)
+        	
+        	var momDate = moment(_eventData.date,"YYYYMMDDHHmmss");
+        	_displayDate = momDate.format("YYYY-MM-DD HH:mm:ss");
+        	
+        	this.date = KO.observable(_displayDate);
         	this.textContent = KO.observable(_eventData.textContent);
 
         	this.element = TPL.getTemplate(".event");
@@ -23,7 +28,7 @@ define([], function() {
         
         Event.prototype.getDate = function()
         {
-        	return this.date();
+        	return this._numericDate;
         }
         
         Event.prototype.getTimelineKey = function()

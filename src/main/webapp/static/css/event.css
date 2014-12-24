@@ -22,6 +22,8 @@
     color: rgb(85, 88, 118);
     text-align: left;
     text-indent: 7px;
+    
+    font-family: 'ansonregular';
 }
 
 .event .textContent {
