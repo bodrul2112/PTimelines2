@@ -10,12 +10,11 @@
 	-webkit-box-shadow: 2px 4px 5px -1px rgba(15, 15, 15, 0.75);
 }
 
-.event .date {
+.event .eventHeader {
     width: 100%;
 	
     background-color: rgb(224, 231, 237);
     height: 25px;
-    line-height: 25px;
     border: 1px solid rgb(224, 231, 237);
     
     font-weight:bold;
@@ -24,6 +23,30 @@
     text-indent: 7px;
     
     font-family: 'ansonregular';
+	cursor: default;
+}
+
+.eventHeader .date {
+	float:left;
+	height:100%;
+	width: 84%;
+    line-height: 25px;
+    -webkit-transition: opacity .5s linear, visibility .2s linear .5s;
+}
+
+.eventHeader .editButton {
+	float:left;
+	height:100%;
+	width: 16%;
+	line-height: 17px;
+	opacity: 0.5;
+	color:black;
+}
+
+.eventHeader .editButton:hover {
+	opacity:1;
+	background-color: rgb(198, 206, 213);
+	-webkit-transition: opacity .5s linear, visibility .2s linear .5s;
 }
 
 .event .textContent {

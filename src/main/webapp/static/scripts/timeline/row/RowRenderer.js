@@ -57,24 +57,65 @@ define(["timeline/data/TimelineData",
         	this.pSortedEventSlots = [];
 		}        
         
-        RowRenderer.prototype._onEventAdded = function( event )
+        RowRenderer.prototype._onEventAdded = function( jsonData )
         {
-        	var added = false;
-        	for(var index in this.pSortedEventSlots)
+        	var event = jsonData["savedEventObj"];
+        
+        	/**
+        	 * remove event if it was deleted
+        	 */
+        	if(jsonData.deleteOld)
         	{
-        		if(this.pSortedEventSlots[index].getDate() == event.getDate())
-        		{
-        			this.pSortedEventSlots[index].addEvent(event);
-        			added = true;
-        		}
+        		var oldDate = jsonData.oldDate;
+        		
+        		for(var index in this.pSortedEventSlots)
+            	{
+        			var eventSlot = this.pSortedEventSlots[index];
+        			
+        			if(eventSlot.getDate() == oldDate)
+        			{
+        				eventSlot.deleteEntry( jsonData.oldTimelineKey, jsonData.oldId );
+        			}
+            	}
+
         	}
         	
-        	if(!added)
+        	/** 
+        	 * add event if an event has been edited to a new date
+        	 * or a new event was added.
+        	 */
+        	if(!jsonData.isEdit || (jsonData.isEdit && jsonData.deleteOld))
         	{
-        		var eventSlot = new EventSlot(event.getDate());
-        		eventSlot.addEvent(event);
-        		this.pSortedEventSlots.push(eventSlot);
+            	var added = false;
+            	for(var index in this.pSortedEventSlots)
+            	{
+            		if(this.pSortedEventSlots[index].getDate() == event.getDate())
+            		{
+            			this.pSortedEventSlots[index].addEvent(event);
+            			added = true;
+            		}
+            	}
+            	
+            	if(!added)
+            	{
+            		var eventSlot = new EventSlot(event.getDate());
+            		eventSlot.addEvent(event);
+            		this.pSortedEventSlots.push(eventSlot);
+            	}
         	}
+        	
+        	/** get rid of totally empty event slots **/
+        	var newEventSlots = [];
+        	for(var index in this.pSortedEventSlots)
+        	{
+        		var eventSlot = this.pSortedEventSlots[index];
+        		
+        		if(eventSlot.numberOfEntries() > 0)
+        		{
+        			newEventSlots.push(eventSlot);
+        		}
+        	}
+        	this.pSortedEventSlots = newEventSlots;
         	
         	this.pSortedEventSlots.sort(this._eventSortFunction);
         	

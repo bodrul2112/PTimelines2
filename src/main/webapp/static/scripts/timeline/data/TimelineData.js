@@ -182,10 +182,13 @@ define(["timeline/event/Event"], function(Event) {
                 data: JSON.stringify(postData),
                 dataType: "text"
             }).done(function(data) {
-            	
+         
             	var jsonData = JSON.parse(data);
             	var event = new Event(jsonData.timelineKey, jsonData.timelineName, jsonData );
-            	EVT.publish(EVT.EVENT_ADDED, event);
+            	
+            	jsonData["savedEventObj"]=event;
+            	
+            	EVT.publish(EVT.EVENT_ADDED, jsonData);
             	
             }.bind(this))
             .fail(function(xhr, textStatus, thrownError) { alert("error " + textStatus); console.log(xhr, textStatus, thrownError);})

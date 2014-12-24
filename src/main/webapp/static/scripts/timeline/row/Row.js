@@ -52,7 +52,5 @@ define(["timeline/row/RowTab"],
         	return this.element;
         }
         
-        
-        
         return Row;
 });

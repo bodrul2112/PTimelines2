@@ -21,10 +21,11 @@
     	<div class="main_wrapper">
     	</div>
     	
-    	<div class="editlyButton" data-bind="click:_onEditClicked"></div>
-    	
     	<div class="event">
-    		<div class="date" data-bind="text:date"></div>
+    		<div class="eventHeader">
+    			<div class="date" data-bind="text:date"></div>
+    			<div class="editButton" data-bind="click:_onEditClicked">...</div>
+    		</div>
     		<div class="textContentBox">
 	    		<div class="textContent" data-bind="text:textContent"></div>
     		</div>

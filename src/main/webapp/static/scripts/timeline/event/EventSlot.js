@@ -20,16 +20,6 @@ define([], function() {
         	return this.element;
         }
         
-        EventSlot.prototype.addEvent = function( event )
-        {
-        	if(!this.mTimelineToEvents[event.getTimelineKey()])
-        	{
-        		this.mTimelineToEvents[event.getTimelineKey()] = [];
-        	}
-        	
-        	this.mTimelineToEvents[event.getTimelineKey()].push(event);
-        }
-        
         EventSlot.prototype.getEventBox = function( timelineKey )
         {
         	var eventBox = TPL.getTemplate(".eventBox");
@@ -71,6 +61,49 @@ define([], function() {
         		eventBoxElement.height(maxHeight);
         	}
         }
+        
+        EventSlot.prototype.addEvent = function( event )
+        {
+        	if(!this.mTimelineToEvents[event.getTimelineKey()])
+        	{
+        		this.mTimelineToEvents[event.getTimelineKey()] = [];
+        	}
+        	
+        	this.mTimelineToEvents[event.getTimelineKey()].push(event);
+        }
+        
+        EventSlot.prototype.deleteEntry = function( timelineKey, eventId )
+        {
+        	var pEvents = this.mTimelineToEvents[timelineKey];
+        	
+        	var newEvents = [];
+        	for(var index in pEvents)
+        	{
+        		var event = pEvents[index];
+        		if(event.getId()!=eventId)
+        		{
+        			newEvents.push(event);
+        		}
+        	}
+        	
+        	this.mTimelineToEvents[timelineKey] = newEvents;
+        }
+        
+        EventSlot.prototype.numberOfEntries = function()
+        {
+        	var num = 0;
+        	
+        	for(var timelineKey in this.mTimelineToEvents)
+        	{
+        		var pEvents = this.mTimelineToEvents[timelineKey];
+        		for(var index in pEvents)
+        		{
+        			num++;
+        		}
+        	}
+        	
+        	return num;
+        }   
         
         return EventSlot;
 });

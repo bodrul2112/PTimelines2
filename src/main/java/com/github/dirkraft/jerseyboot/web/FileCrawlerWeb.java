@@ -99,12 +99,14 @@ public class FileCrawlerWeb extends BaseJsonResource {
 					event.put("date", p.getProperty("date"));
 					event.put("textContent", p.getProperty("textContent"));
 					event.put("filePath", file.getAbsolutePath());
+					event.put("folderPath", folder.getAbsolutePath());
 					events.add(event);
 				}
 				
 				Map<String,Object> timeLineData = new HashMap<>();
 				timeLineData.put("timelineName", timelineName);
 				timeLineData.put("events", events);
+				timeLineData.put("folderPath", folder.getAbsolutePath());
 				
 				result.put(timelineKey, timeLineData);
 			}
@@ -143,7 +145,7 @@ public class FileCrawlerWeb extends BaseJsonResource {
 	private Map<String, Object> getTimelinesLoadedNotLoaded() {
 		
 		Properties prop = getLoadedPropertyFiles();
-		Set<String> loaded = new HashSet<>(Arrays.asList(prop.getProperty("loaded").split(",")));
+		Set<String> loaded = new HashSet<>(Arrays.asList(prop.getProperty("loaded","").split(",")));
 		
 		File f = new File(rootFile);
 		File[] listFiles = f.listFiles();
@@ -224,6 +226,13 @@ public class FileCrawlerWeb extends BaseJsonResource {
 		
 		//d: 1419432424972, date: 20120101121212, textContent: "fgdgdf", filePath: "E:\_TEST\timelines\1-timos1\20120101121212-1419432424972.properties"}
 		
+		if(postData.get("deleteOld") != null && postData.get("deleteOld").equals("true"))
+		{
+			File f = new File(postData.get("oldFilePath"));
+			f.delete();
+		}
+		
+		
 		String id = postData.get("id");
 		String date = postData.get("date");
 		String textContent = postData.get("textContent");
@@ -232,6 +241,7 @@ public class FileCrawlerWeb extends BaseJsonResource {
 		try {
 			
 			Properties prop = new Properties();
+			File f = new File(filePath);
 			OutputStream output = new FileOutputStream(filePath);
 			prop.setProperty("id", id);
 			prop.setProperty("date", date);
