@@ -98,7 +98,7 @@ public class FileCrawlerWeb extends BaseJsonResource {
 					event.put("id", p.getProperty("id"));
 					event.put("date", p.getProperty("date"));
 					event.put("textContent", p.getProperty("textContent"));
-					event.put("fileName", file.getName());
+					event.put("filePath", file.getAbsolutePath());
 					events.add(event);
 				}
 				
@@ -214,6 +214,42 @@ public class FileCrawlerWeb extends BaseJsonResource {
 		}
 		return timelineKey;
 	}
+	
+	@POST
+	@Path("/saveEvent")
+	@Consumes({"application/xml", "application/json"})
+	@Produces({"application/xml", "application/json"})
+	public Response saveEvent(Map<String,String> postData) 
+	{
+		
+		//d: 1419432424972, date: 20120101121212, textContent: "fgdgdf", filePath: "E:\_TEST\timelines\1-timos1\20120101121212-1419432424972.properties"}
+		
+		String id = postData.get("id");
+		String date = postData.get("date");
+		String textContent = postData.get("textContent");
+		String filePath = postData.get("filePath");
+		
+		try {
+			
+			Properties prop = new Properties();
+			OutputStream output = new FileOutputStream(filePath);
+			prop.setProperty("id", id);
+			prop.setProperty("date", date);
+			prop.setProperty("textContent", textContent);
+			
+			prop.store(output, null);
+			
+			Gson gson = new Gson();
+    		String json = gson.toJson(postData);
+			
+    		return Response.status(200).entity(json).build();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("failed to create timeline - super fail").build();
+		}
+		
+    }
 	
 	@POST
 	@Path("/createNewTimeLine")

@@ -1,10 +1,11 @@
 
 define(["timeline/event/EventTicket"], function( EventTicket ) {
 
-        var RowTab = function(_timelineKey, _timelineName)
+        var RowTab = function(_timelineKey, _timelineName, _folderPath)
         {
         	this.timelineKey = _timelineKey;
         	this.timelineName = _timelineName;
+        	this.folderPath =_folderPath;
         	
         	this.element = TPL.getTemplate(".rowTab");
         	this.name = KO.observable(this.timelineName);
@@ -16,7 +17,7 @@ define(["timeline/event/EventTicket"], function( EventTicket ) {
         
         RowTab.prototype._onPlusClicked = function()
         {
-        	var ticket = new EventTicket(this.timelineKey, this.timelineName);
+        	var ticket = new EventTicket(this.timelineKey, this.timelineName, this.folderPath);
         	$('body').append(ticket.getElement());
         }
         

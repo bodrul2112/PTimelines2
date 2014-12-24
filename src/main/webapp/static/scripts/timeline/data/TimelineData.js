@@ -164,21 +164,31 @@ define(["timeline/event/Event"], function(Event) {
             	var jsonData = JSON.parse(data);
             	
             	EVT.publish(EVT.TIMELINE_ADDED, jsonData.added);
-//            	EVT.publish(EVT.TIMELINE_ADDED, {
-//            		"timelineKey": id,
-//            		"timelineName": sTimelineName
-//            	});
-            	
             	EVT.publish(EVT.RE_RENDER, jsonData.timelines.loaded);
             	
             }.bind(this))
             .fail(function(xhr, textStatus, thrownError) { alert("error " + textStatus); console.log(xhr, textStatus, thrownError);})
+        
+        
         }
         
-        TimelineData.prototype.saveEvent = function(timelineKey, timelineName, eventData)
+        TimelineData.prototype.saveEvent = function(postData)
         {
-//        	var event = new Event(timelineKey, timelineName, eventData );
-//        	EVT.publish(EVT.EVENT_ADDED, event);
+            	
+        	$.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "/timelines/saveEvent",
+                data: JSON.stringify(postData),
+                dataType: "text"
+            }).done(function(data) {
+            	
+            	var jsonData = JSON.parse(data);
+            	var event = new Event(jsonData.timelineKey, jsonData.timelineName, jsonData );
+            	EVT.publish(EVT.EVENT_ADDED, event);
+            	
+            }.bind(this))
+            .fail(function(xhr, textStatus, thrownError) { alert("error " + textStatus); console.log(xhr, textStatus, thrownError);})
         }
         
         TimelineData.prototype.getTimelineNames = function()

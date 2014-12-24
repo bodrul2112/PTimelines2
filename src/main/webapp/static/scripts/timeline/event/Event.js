@@ -7,6 +7,7 @@ define([], function() {
         	this.timelineKey = _timelineKey;
         	this.timelineName = _timelineName;
         	this.id = _eventData.id;
+        	this.filePath = _eventData.filePath;
         	
         	this.date = KO.observable(_eventData.date);
         	this.textContent = KO.observable(_eventData.textContent);

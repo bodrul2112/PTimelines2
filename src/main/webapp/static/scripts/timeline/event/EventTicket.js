@@ -1,11 +1,13 @@
 
 define(["timeline/event/Event", "timeline/data/TimelineData"], function( Event, TimelineData ) {
 
-        var EventTicket = function(_timelineKey, _timelineName)
+        var EventTicket = function(_timelineKey, _timelineName, _folderPath)
         {
+        	this.folderPath = _folderPath;
         	this.timelineData = new TimelineData();
         	
         	this.timelineKey = _timelineKey;
+        	this.timelineName = _timelineName;
         	this.element = TPL.getTemplate(".eventTicket");
         	
         	this.headerText = KO.observable(_timelineName);
@@ -34,16 +36,23 @@ define(["timeline/event/Event", "timeline/data/TimelineData"], function( Event, 
         	{
         		var _id = new Date().getTime();
         		var _isoDate = parseInt(this.ymd().trim()+this.hms().trim());
-        		var _textContent = this.content().trim();
+        		var _textContent = _content.trim();
+        		
+        		var _filePath = this.folderPath +"\\"+_isoDate+"-"+_id+".properties"; 
+        		var _timelineKey = this.timelineKey;
+        		var _timelineName = this.timelineName;
         		
         		var eventData =
         		{
         			id: _id,
         			date: _isoDate,
-        			textContent: _textContent
+        			textContent: _textContent,
+        			filePath: _filePath,
+        			timelineKey: _timelineKey,
+        			timelineName: _timelineName
         		}
         		
-        		this.timelineData.saveEvent( this.timelineKey, this.headerText(), eventData );
+        		this.timelineData.saveEvent( eventData );
         		this.element.remove();
         	}
         	else

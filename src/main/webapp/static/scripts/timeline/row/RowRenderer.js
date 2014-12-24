@@ -101,7 +101,7 @@ define(["timeline/data/TimelineData",
         	this._addRowsToTimeline();
         }
         
-        RowRenderer.prototype._getOrCreateRow = function( timelineKey, timelineName )
+        RowRenderer.prototype._getOrCreateRow = function( timelineKey, timelineName, folderPath )
         {
         	for(var index in this.pRows)
         	{
@@ -111,7 +111,7 @@ define(["timeline/data/TimelineData",
         		}
         	}
         	
-        	var row = new Row(timelineKey, timelineName);
+        	var row = new Row(timelineKey, timelineName, folderPath);
         	
         	if(this.mCoords[row.getTimelineKey()])
         	{
@@ -127,7 +127,8 @@ define(["timeline/data/TimelineData",
         	for(var timelineKey in this.mTimelines)
         	{
         		var timelineName = this.mTimelines[timelineKey].timelineName;
-        		var row = this._getOrCreateRow(timelineKey, timelineName);
+        		var folderPath = this.mTimelines[timelineKey].folderPath;
+        		var row = this._getOrCreateRow(timelineKey, timelineName, folderPath);
         		
             	for(var index in this.pSortedEventSlots)
             	{

@@ -3,14 +3,15 @@ define(["timeline/row/RowTab"],
         
         function(RowTab) {
 
-        var Row = function( _timelineKey, _timelineName )
+        var Row = function( _timelineKey, _timelineName, _folderPath )
         {
         	this.timelineKey = _timelineKey;
         	this.timelineName = _timelineName;
+        	this.folderPath = _folderPath;
         	
         	this.element = TPL.getTemplate(".row");
         	this.tabBuffer = TPL.getTemplate(".rowTabBuffer");
-        	this.rowTab = new RowTab(this.timelineKey, this.timelineName);
+        	this.rowTab = new RowTab(this.timelineKey, this.timelineName, this.folderPath);
         	
         	this.element.draggable({ axis: 'y' });
         	this.element.append(this.rowTab.getElement());
