@@ -23,7 +23,8 @@ define(["timeline/row/Row",
         {
         	eContainer.append(this.element);
         	
-        	this.rowRenderer.renderTimelines(this.timelineData.getTimelineNames().loaded);
+        	this.timelineData.getTimelineNames();
+//        	this.rowRenderer.renderTimelines();
         	
 //        	row.getElement().css('top', '100px');
 //        	row2.getElement().css('top', '122px');

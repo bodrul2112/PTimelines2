@@ -21,17 +21,26 @@ define(["timeline/data/TimelineData",
         	
         	EVT.subscribe(EVT.EVENT_ADDED, this._onEventAdded.bind(this));
         	EVT.subscribe(EVT.RE_RENDER, this.renderTimelines.bind(this));
+        	EVT.subscribe(EVT.TIMELINE_DATA_RECEIVED, this._onTimelineDataReceived.bind(this))
         }
         
-        RowRenderer.prototype.renderTimelines = function( _mTimelines )
+        RowRenderer.prototype.renderTimelines = function( mData )
         {
-        	this.mTimelines = _mTimelines;
+        	this.mTimelines = mData;
+        	var sFolders = "";
+        	for(var timelineKey in this.mTimelines)
+        	{
+        		sFolders+=this.mTimelines[timelineKey].folderPath+">";
+        	}
+        	
+        	this.timelineData.getTimelines(sFolders);
+        }
+        
+        RowRenderer.prototype._onTimelineDataReceived = function( loadedTimelineData ) {
         	
         	this._clearDownAllRows();
-        	
-        	var mEventSlots = this._createEventSlots();
+        	var mEventSlots = this._createEventSlots(loadedTimelineData);
         	this.pSortedEventSlots = this._sortEventSlots(mEventSlots);
-        	
         	this._createRows();
         }
         
@@ -176,13 +185,13 @@ define(["timeline/data/TimelineData",
 			return event_a.getDate() - event_b.getDate();
 		}
         
-        RowRenderer.prototype._createEventSlots = function()
+        RowRenderer.prototype._createEventSlots = function( loadedTimelineData )
         {
         	var mEventSlots = {};
         	
         	for(var timelineKey in this.mTimelines)
         	{
-        		var timelineData = this.timelineData.getTimeline( timelineKey );
+        		var timelineData = loadedTimelineData[timelineKey];
         		
         		if(timelineData && timelineData.events)
         		{

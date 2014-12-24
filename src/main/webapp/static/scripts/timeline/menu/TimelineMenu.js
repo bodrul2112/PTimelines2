@@ -19,9 +19,9 @@ define(["timeline/data/TimelineData", "timeline/menu/TimelineButton"], function(
         	this.mTimelineData = {};
         	
         	
-        	this.loadMenuItems(this.timelineData.getTimelineNames());
         	EVT.subscribe(EVT.TIMELINE_MENU_ITEM_CLICKED, this._onTimelineLoadedCallback.bind(this));
         	EVT.subscribe(EVT.TIMELINE_ADDED, this._onNewTimelineAdded.bind(this));
+        	EVT.subscribe(EVT.RE_RENDER_MENU, this.loadMenuItems.bind(this));// (this.timelineData.getTimelineNames());
         }
         
         TimelineMenu.prototype._onHideClicked = function()
@@ -77,7 +77,7 @@ define(["timeline/data/TimelineData", "timeline/menu/TimelineButton"], function(
         	}
         	
         	timelineButton._rebind();
-        	
+        	this.save();
         	EVT.publish(EVT.RE_RENDER, this.mTimelineData.loaded);
         }
         
@@ -108,8 +108,21 @@ define(["timeline/data/TimelineData", "timeline/menu/TimelineButton"], function(
         TimelineMenu.prototype._onNewTimelineAdded = function( mData )
         {
         	var button = new TimelineButton(mData.timelineKey, mData.timelineName, true);
+        	this.mTimelineData.loaded[mData.timelineKey] = mData;
         	
+        	this.save();
         	this.eLoaded.append(button.getElement());
+        }
+        
+        TimelineMenu.prototype.save = function()
+        {
+        	var keys = "";
+        	for(var key in this.mTimelineData.loaded)
+        	{
+        		keys+=key+",";
+        	}
+        	
+        	this.timelineData.saveLoadedState(keys);
         }
         
         TimelineMenu.prototype.getElement = function()

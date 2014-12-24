@@ -30,7 +30,7 @@ public class BaseConfig {
      * Defaults to {@value #DEF_JETTY_PORT}.
      */
     public static final String PROP_JETTY_PORT = "jetty.port";
-    public static final int DEF_JETTY_PORT = 7788;
+    public static final int DEF_JETTY_PORT = 8899;
     static {
         DEFAULTS.setInt(PROP_JETTY_PORT, DEF_JETTY_PORT);
     }

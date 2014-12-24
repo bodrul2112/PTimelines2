@@ -3,12 +3,24 @@ package com.github.dirkraft.jerseyboot.web;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.ws.rs.Consumes;
@@ -24,107 +36,229 @@ import javax.ws.rs.core.Response.Status;
 import com.github.dirkraft.jerseyboot.base.BaseJsonResource;
 import com.google.gson.Gson;
 
-@Path("/donext/")
+@Path("/timelines/")
 public class FileCrawlerWeb extends BaseJsonResource {
 	
-	private String rootFile = "F:/_DROPBOX/Dropbox/_TODO_BLOB";
+	private String rootFile = "E:/_TEST/timelines";
 	
 	public FileCrawlerWeb()
 	{
-		rootFile = new File("").getAbsolutePath();
+		//rootFile = new File("").getAbsolutePath();
 	}
 	
 	@GET
-	@Path("/categories")
+	@Path("/saveLoaded")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Object getCategories() 
+	public Object saveLoaded(@QueryParam("loaded") String loadedKeys) 
 	{
-		File f = new File(rootFile+"/categories.txt");
+		String result = "ok";
+		Properties props = getLoadedPropertyFiles();
 		
-		String result = "";
-		try{
+		try {
+			OutputStream output = new FileOutputStream(rootFile+"/loaded.properties");
+			props.setProperty("loaded", loadedKeys);
 			
-			BufferedReader reader = new BufferedReader(new FileReader(f));
-	
-	        String line = null;
-	        while ((line=reader.readLine()) != null) {
-	        	result+=line + "\n";
-	        }
-	
-	        reader.close(); 
-		}
-		catch(Exception e)
-		{
+			props.store(output, null);
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		Map<String,String> res = new HashMap<>();
-		res.put("result", result);
-		return res;
+		return result;
 	}
 	
 	@GET
-	@Path("/todos")
+	@Path("/timelineData")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Object getTodos(@QueryParam("categoryId") String categoryId) 
+	public Object getTimelines(@QueryParam("folderPaths") String folderPathsStr) 
 	{
-		File f = new File(rootFile+"/"+categoryId);
+		String[] folderPaths = folderPathsStr.split(">");
 		
-		File[] listFiles = f.listFiles();
-		Map<String,String> results = new HashMap<>();
+		Map<String,Object> result = new HashMap<>();
 		
-		for (File file : listFiles) {
+		for (String folderPath : folderPaths) 
+		{
 			
-			if(!file.isDirectory())
+			if(!folderPath.trim().isEmpty())
 			{
-				String name = file.getName().split(".txt")[0];
-				String contents = getContents(file);
-				results.put(name, contents);
+				File folder = new File(folderPath);
+				File[] listFiles = folder.listFiles();
+				
+				String timelineKey = getTimelineKey(folder.getName());
+				String timelineName = getTimelineName(folder.getName(), timelineKey);
+				
+				List<Object> events = new ArrayList<>();
+				
+				for (File file : listFiles) {
+					
+					Properties p = getEventProperty(file); 
+					Map<String,String> event = new HashMap<>();
+					event.put("id", p.getProperty("id"));
+					event.put("date", p.getProperty("date"));
+					event.put("textContent", p.getProperty("textContent"));
+					event.put("fileName", file.getName());
+					events.add(event);
+				}
+				
+				Map<String,Object> timeLineData = new HashMap<>();
+				timeLineData.put("timelineName", timelineName);
+				timeLineData.put("events", events);
+				
+				result.put(timelineKey, timeLineData);
 			}
 		}
 		
+		return result;
+	}
+	
+	
+	private Properties getEventProperty(File file) {
+		
+		Properties prop = new Properties();
+		InputStream input;
+		try {
+			input = new FileInputStream(file);
+			prop.load(input);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return prop;
+	}
+
+	@GET
+	@Path("/timelineNames")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object getTimelineNames() 
+	{
+		Map<String, Object> results = getTimelinesLoadedNotLoaded();
+		
 		return results;
+	}
+
+	private Map<String, Object> getTimelinesLoadedNotLoaded() {
+		
+		Properties prop = getLoadedPropertyFiles();
+		Set<String> loaded = new HashSet<>(Arrays.asList(prop.getProperty("loaded").split(",")));
+		
+		File f = new File(rootFile);
+		File[] listFiles = f.listFiles();
+		Map<String,Object> results = new HashMap<>();
+		Map<String, Map<String,String>> loadedMap = new HashMap<>();
+		Map<String, Map<String,String>> notLoadedMap = new HashMap<>();
+		
+		for (File file : listFiles) {
+			
+			if(file.isDirectory())
+			{
+				String folderName = file.getName();
+
+				String timelineKey = getTimelineKey(folderName);
+				String timelineName = getTimelineName(folderName, timelineKey);
+				
+				Map<String, String> data = new HashMap<String,String>();
+				data.put("timelineName", timelineName);
+				data.put("folderPath", file.getAbsolutePath());
+				
+				if(loaded.contains(timelineKey))
+				{
+					loadedMap.put(timelineKey, data);
+				}
+				else
+				{
+					notLoadedMap.put(timelineKey, data);
+				}
+				
+			}
+		}
+		
+		results.put("loaded", loadedMap);
+		results.put("notLoaded", notLoadedMap);
+		return results;
+	}
+
+
+	private Properties getLoadedPropertyFiles() {
+		Properties prop = new Properties();
+		InputStream input = null;
+	 
+		Set<String> loaded = null;
+		
+		try {
+			input = new FileInputStream(new File(rootFile+"/loaded.properties"));
+			prop.load(input);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return prop;
+	}
+
+	private String getTimelineName(String folderName, String timelineKey) {
+		return folderName.substring(timelineKey.length()+1, folderName.length());
+	}
+
+	private String getTimelineKey(String folderName) {
+		String timelineKey;
+		if(folderName.indexOf("-")==0)
+		{
+			String cleanId = folderName.substring(0, folderName.length()-1);
+			timelineKey = "-"+cleanId.substring(0, cleanId.indexOf("-"));
+		}
+		else
+		{
+			timelineKey = folderName.substring(0, folderName.indexOf("-"));
+		}
+		return timelineKey;
 	}
 	
 	@POST
-	@Path("/savetodo")
+	@Path("/createNewTimeLine")
 	@Consumes({"application/xml", "application/json"})
 	@Produces({"application/xml", "application/json"})
 	public Response saveTodo(Map<String,String> postData) 
 	{
 		
-		try{
+		try {
+			String namePrefix = ""+new Date().getTime();
+			String timelineName = postData.get("timelineName");
+			String folderName = namePrefix+"-"+timelineName;
+			File newTimelineFolder = new File(rootFile + "/" + folderName);
 			
-			String fileName = postData.remove("filename");
-			String doneFileName = postData.remove("doneFilename");
-    		String content = postData.get("content");
-    		
-    		if(postData.get("done").equals("true"))
-    		{
-    			String path = rootFile+"/"+doneFileName; 
-    			saveFile(path, content);
-    			
-    			String oldPath = rootFile+"/"+fileName; 
-    			deleteFile(oldPath);
-    		}
-    		else
-    		{
-        		String path = rootFile+"/"+fileName; 
-    			saveFile(path, content);
-    		}
-    		
-			Gson gson = new Gson();
-    		String json = gson.toJson(postData);
-    		
-    		return Response.status(200).entity(json).build();
-		
-		}
-		catch(Exception e)
-		{
-			System.out.println("DIDNT WORK");
+			if(!newTimelineFolder.exists() && !timelineName.isEmpty())
+			{
+				newTimelineFolder.mkdir();
+				Map<String, Object> timelines = getTimelinesLoadedNotLoaded();
+				Map<String,String> added = new HashMap<>();
+				added.put("timelineKey", namePrefix);
+				added.put("timelineName",timelineName);
+				added.put("folderPath", newTimelineFolder.getAbsolutePath());
+				
+				Map<String,Object> loaded = (Map<String,Object>) timelines.get("loaded"); 
+				loaded.put(namePrefix, added);
+				
+				Map<String,Object> result = new HashMap<>();
+				result.put("added",added);
+				result.put("timelines", timelines);
+				
+				Gson gson = new Gson();
+	    		String json = gson.toJson(result);
+				
+	    		return Response.status(200).entity(json).build();
+			}
+			else
+			{
+				return Response.status(Status.INTERNAL_SERVER_ERROR).entity("failed to create timeline").build();
+			}
+			
+		} catch (Exception e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("failed to save file").build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("failed to create timeline - super fail").build();
 		}
+		
     }
 	
 	private String getContents(File f) {
@@ -247,39 +381,30 @@ public class FileCrawlerWeb extends BaseJsonResource {
 	@Produces({"application/xml", "application/json"})
 	public Response setSomeProps(Map<String,String> postData) 
 	{
-		String result = "new subtopic created";
+//		String result = "new subtopic created";
+//		
+//		
+//		
+//		System.out.println("received a mkdir request :: " + newFolder.getAbsolutePath());
+//		
+//		boolean createdFolder = newFolder.mkdir();
+//		
+//		postData.put("folderPath", newFolder.getAbsolutePath());
+//		
+//		Gson gson = new Gson();
+//		String json = gson.toJson(postData);
+//		
+//		if(createdFolder)
+//		{
+//			return Response.status(200).entity(json).build();
+//		}
+//		else
+//		{
+//			System.out.println("DIDNT WORK");
+//			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("failed to create folder").build();
+//		}
 		
-		String[] expectedParams = new String[]{"folderPath","folderName"};
-		
-		for(String key : expectedParams) 
-		{
-			if(postData.get(key) == null || postData.get(key).equals(""))
-			{
-				throw new RuntimeException("sad times");
-			}
-		}
-		
-		File newFolder = new File(postData.get("folderPath") +"/"+ postData.get("folderName"));
-		
-		
-		System.out.println("received a mkdir request :: " + newFolder.getAbsolutePath());
-		
-		boolean createdFolder = newFolder.mkdir();
-		
-		postData.put("folderPath", newFolder.getAbsolutePath());
-		
-		Gson gson = new Gson();
-		String json = gson.toJson(postData);
-		
-		if(createdFolder)
-		{
-			return Response.status(200).entity(json).build();
-		}
-		else
-		{
-			System.out.println("DIDNT WORK");
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("failed to create folder").build();
-		}
+		return null;
     }
 	
 	@POST
