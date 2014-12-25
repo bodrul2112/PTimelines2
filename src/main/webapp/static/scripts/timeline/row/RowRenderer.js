@@ -215,7 +215,7 @@ define(["timeline/data/TimelineData",
         {
         	for(var index in this.pRows)
         	{
-        		this.pRows[index].removeAllBoxes();
+        		this.pRows[index].removeAllBoxes();   
         	}
         }
         
