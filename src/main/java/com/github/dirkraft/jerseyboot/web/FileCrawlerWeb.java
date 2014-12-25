@@ -42,7 +42,7 @@ public class FileCrawlerWeb extends BaseJsonResource {
 	
 	public FileCrawlerWeb()
 	{
-		//rootFile = new File("").getAbsolutePath();
+		rootFile = new File("").getAbsolutePath();
 	}
 	
 	@GET
