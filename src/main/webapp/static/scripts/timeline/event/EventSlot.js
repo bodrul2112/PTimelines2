@@ -103,7 +103,23 @@ define([], function() {
         	}
         	
         	return num;
-        }   
+        }
+        
+        EventSlot.prototype.getMaxEntries = function()
+        {
+        	var maxNum = 0;
+        	
+        	for(var timelineKey in this.mTimelineToEvents)
+        	{
+        		var pEvents = this.mTimelineToEvents[timelineKey];
+        		if(pEvents && pEvents.length>maxNum)
+        		{
+        			maxNum=pEvents.length;
+        		}
+        	}
+        	
+        	return maxNum;
+        }
         
         return EventSlot;
 });

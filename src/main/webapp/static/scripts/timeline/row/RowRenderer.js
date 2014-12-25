@@ -193,11 +193,22 @@ define(["timeline/data/TimelineData",
         
         RowRenderer.prototype._configureBoxSizes = function()
         {
+        	var numberOfCols = 0;
         	for(var index in this.pSortedEventSlots)
         	{
         		var eventSlot = this.pSortedEventSlots[index];
         		eventSlot.postProcessEventBoxWidths();
+        		numberOfCols += eventSlot.getMaxEntries();
         	}
+        	
+        	var rowWidth = numberOfCols*175;
+        	
+        	for(var index in this.pRows)
+        	{
+        		var row = this.pRows[index];
+        		row.getElement().css('width', rowWidth+"px");
+        	}
+        	
         }
         
         RowRenderer.prototype._clearRows = function( )
